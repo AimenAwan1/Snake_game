@@ -10,8 +10,6 @@ surface = pygame.display.set_mode((1000, 800))
 class Button:
     def __init__(self, name, x, y):
 
-        #self.surface.fill('pink')
-
         font = pygame.font.SysFont('arial', 40, bold=True)
         self.surf = font.render(name, True, 'white')
         self.button = pygame.Rect(x, y, 110, 60)
@@ -21,7 +19,6 @@ class Button:
         action = False
         pos = pygame.mouse.get_pos()
 
-        # if self.button.x <= a <= self.button.x + 110 and self.button.y <= b <= self.button.y + 60:
         if self.button.collidepoint(pos):
             pygame.draw.rect(surface, (180, 180, 180), self.button)
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
@@ -195,6 +192,19 @@ class Game:
         self.surface.blit(line1, (200, 300))
         line2 = font.render("To play again press Enter. To exit press Escape!", True, (255, 255, 255))
         self.surface.blit(line2, (200, 350))
+
+        #restart = True
+        #while restart:
+            #restart_button = Button("Restart", 200, 600)
+            #if restart_button.draw_button(True):
+             #   pass
+                #game2= Game()
+                #game2.run()
+
+            #for events in pygame.event.get():
+             #   if events.type == pygame.QUIT:
+              #      pygame.quit()
+               #     restart = False
         pygame.display.flip()
 
         pygame.mixer.music.pause()
@@ -205,7 +215,7 @@ class Game:
 
     def run(self):
         running = True
-        pause = False
+        self.pause = False
 
         while running:
             for event in pygame.event.get():
@@ -213,9 +223,9 @@ class Game:
 
                     if event.key == K_RETURN:
                         pygame.mixer.music.unpause()
-                        pause = False
+                        self.pause = False
 
-                    if not pause:
+                    if not self.pause:
                         if event.key == K_UP:
                             self.snake.move_up()
 
@@ -234,15 +244,15 @@ class Game:
 
                 elif event.type == QUIT:
                     running = False
+                    sys.exit()
 
             try:
-                if not pause:
+                if not self.pause:
                     self.play()
             except Exception as e:
                 self.show_game_over()
-                pause = True
+                self.pause = True
                 self.reset()
-
             time.sleep(0.2)
 
 
